@@ -5,8 +5,8 @@ export const TopBar = () => {
     const { Title } = Typography;
 
     return (
-        <div className="flex justify-between items-center pb-4">
-            <Title level={2} className="text-xl">
+        <div className="flex items-start flex-col md:flex-row md:justify-between md:items-center pb-4">
+            <Title level={2} className="text-xl md:mb-0">
                 Favorite Visualisation Chooser
             </Title>
             <Space>

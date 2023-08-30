@@ -1,56 +1,77 @@
-import { CovidDataResponse, WeeklyDeathCount } from "@/types";
+import { limitArray } from "@/helpers";
+import {
+    CovidWeeklyDeathsResponse,
+    PatientWeeklyResponse,
+    WeeklyDeathCount,
+} from "@/types";
 import { Chart } from "@antv/g2";
 import { UseQueryResult } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef } from "react";
 
 interface ChartProps {
-    // TODO: add chartQuery Props after second chart done
-    chartQuery: UseQueryResult<CovidDataResponse<WeeklyDeathCount>, unknown>;
+    chartQuery: UseQueryResult<
+        CovidWeeklyDeathsResponse | PatientWeeklyResponse,
+        unknown
+    >;
+    type: "line" | "interval";
+    chartYData: string;
 }
 
-export const useChart = ({ chartQuery }: ChartProps) => {
+export const useChart = (props: ChartProps) => {
+    const { chartQuery, type, chartYData } = props;
     const chartContainer = useRef<HTMLDivElement>(null);
     const chart = useRef<Chart>(null);
 
-    function renderBarChart(
-        container?: HTMLDivElement,
-        data?: WeeklyDeathCount[]
-    ) {
-        const chart = new Chart({
-            container,
-            theme: "classic",
-            height: 400,
-            width: 600,
-            padding: "auto",
-        });
+    const renderLineChart = useCallback(
+        (container?: HTMLDivElement, data?: WeeklyDeathCount[]) => {
+            const chart = new Chart({
+                container,
+                theme: "classic",
+                height: 400,
+                width: 600,
+                padding: "auto",
+            });
 
-        chart
-            .line()
-            .data(data)
-            .encode("x", "date")
-            .encode("y", "New deaths - weekly")
-            .encode("key", "date")
-            .animate("update", { duration: 300 });
+            chart
+                .data(data)
+                .encode("x", "date")
+                .encode("y", chartYData)
+                .encode("key", "date")
+                .animate("update", { duration: 300 });
 
-        chart.render();
+            if (type === "line") {
+                chart.line();
+            } else {
+                chart.interval();
+            }
 
-        return chart;
-    }
+            chart.render();
 
-    const limitArray = useCallback((limit: number, arr?: any[]) => {
-        return arr?.slice(arr.length - limit, arr.length);
-    }, []);
+            return chart;
+        },
+        [chartYData, type]
+    );
+
+    const arrayLimitter = useCallback(
+        (limit: number, arr?: any[]) => limitArray(limit, arr),
+        []
+    );
 
     useEffect(() => {
         if (!chart.current && !chartQuery.isLoading) {
             // @ts-ignore
-            chart.current = renderBarChart(
+            chart.current = renderLineChart(
                 // @ts-ignore
                 chartContainer.current,
-                limitArray(10, chartQuery.data?.data)
+                arrayLimitter(10, chartQuery.data?.data)
             );
         }
-    }, [chartQuery.data?.data, chartQuery.isLoading, limitArray]);
+    }, [
+        chartQuery.data?.data,
+        chartQuery.isLoading,
+        arrayLimitter,
+        renderLineChart,
+    ]);
 
     return { chartContainer };
 };

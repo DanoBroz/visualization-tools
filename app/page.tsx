@@ -1,34 +1,28 @@
 "use client";
 
-import { ChartCard, Navbar } from "@/components";
+import { Navbar } from "@/components";
+import { DeathChart } from "@/components/DeathChart";
+import { PatientsChart } from "@/components/PatientsChart";
 import { TopBar } from "@/components/TopBar";
-import { useChart } from "@/hooks";
-import { getWeeklyDeaths } from "@/services";
 import theme from "@/theme/themeConfig";
 import { StyleProvider } from "@ant-design/cssinjs";
-import { useQuery } from "@tanstack/react-query";
 import { Col, ConfigProvider, Row } from "antd";
 
 const HomePage = () => {
-    const chartQuery = useQuery(["dailyDeath"], getWeeklyDeaths);
-    const { chartContainer: firstChart } = useChart({ chartQuery });
-
     return (
         <ConfigProvider theme={theme}>
             <StyleProvider hashPriority="high">
                 <Navbar title="COVID-19 UK data vizualisation" />
-                <main className=" bg-gray-200 h-[calc(100vh-49px)]">
-                    <div className="container py-4">
+                <main className="bg-gray-200 pt-[49px] flex flex-col">
+                    <div className="container py-4 px-4 flex-1">
                         <TopBar />
-                        <Row>
-                            <Col span={12}>
-                                <ChartCard
-                                    title="Latest weekly deaths with COVID-19"
-                                    chartContainer={firstChart}
-                                    noteNumber={2}
-                                />
+                        <Row gutter={[16, 16]}>
+                            <Col xs={24} lg={12}>
+                                <DeathChart />
                             </Col>
-                            <Col span={12}></Col>
+                            <Col xs={24} lg={12}>
+                                <PatientsChart />
+                            </Col>
                         </Row>
                     </div>
                 </main>

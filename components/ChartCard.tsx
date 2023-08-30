@@ -1,6 +1,7 @@
 import { Card, CardProps } from "antd";
 import { BsChatLeftText } from "react-icons/bs";
 import { RxAvatar } from "react-icons/rx";
+import { twMerge } from "tailwind-merge";
 
 interface ChartCardProps extends CardProps {
     chartContainer: React.MutableRefObject<HTMLDivElement | null>;
@@ -8,7 +9,8 @@ interface ChartCardProps extends CardProps {
 }
 
 export const ChartCard = (props: ChartCardProps) => {
-    const { chartContainer, noteNumber, title, ...elementProps } = props;
+    const { chartContainer, noteNumber, title, className, ...elementProps } =
+        props;
 
     return (
         <Card
@@ -24,6 +26,7 @@ export const ChartCard = (props: ChartCardProps) => {
                     <BsChatLeftText key="notes" />
                 </span>,
             ]}
+            className={twMerge("overflow-hidden", className)}
             {...elementProps}
         >
             <div ref={chartContainer}></div>

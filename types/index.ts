@@ -4,9 +4,18 @@ export interface ChildrenProps {
     children: ReactNode;
 }
 
-export interface WeeklyDeathCount {
+type GenericValues<K extends string, V> = {
+    [key in K]: V;
+};
+
+export interface WeeklyDeathCount
+    extends GenericValues<"newDailyNsoDeathsByDeathDate", number> {
     date: string;
-    newDailyNsoDeathsByDeathDate: number;
+}
+
+export interface WeeklyAdmittedCount
+    extends GenericValues<"hospitalCasesWeekly", number> {
+    date: string;
 }
 
 export interface CovidDataResponse<Data> {
@@ -17,3 +26,4 @@ export interface CovidDataResponse<Data> {
 }
 
 export type CovidWeeklyDeathsResponse = CovidDataResponse<WeeklyDeathCount>;
+export type PatientWeeklyResponse = CovidDataResponse<WeeklyAdmittedCount>;
