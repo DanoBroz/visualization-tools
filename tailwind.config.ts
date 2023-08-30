@@ -13,7 +13,11 @@ const config: Config = {
                 "2xl": "1280px",
             },
         },
-        extend: {},
+        extend: {
+            colors: {
+                darkGreen: "#32788b",
+            },
+        },
     },
     plugins: [],
 };
