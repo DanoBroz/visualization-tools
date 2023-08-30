@@ -1,18 +1,21 @@
-import { Card, CardProps, Space } from "antd";
+import { Card, Space } from "antd";
 import { BsChatLeftText } from "react-icons/bs";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { RxAvatar } from "react-icons/rx";
 import { twMerge } from "tailwind-merge";
 import { useSwitch } from "@/hooks";
-
-interface ChartCardProps extends CardProps {
-    chartContainer: React.MutableRefObject<HTMLDivElement | null>;
-    noteNumber: number;
-}
+import { ImSpinner10 } from "react-icons/im";
+import type { ChartCardProps } from "@/types";
 
 export const ChartCard = (props: ChartCardProps) => {
-    const { chartContainer, noteNumber, title, className, ...elementProps } =
-        props;
+    const {
+        chartContainer,
+        noteNumber,
+        title,
+        className,
+        isLoading,
+        ...elementProps
+    } = props;
 
     const { isSelected, handleSwitch } = useSwitch();
 
@@ -51,7 +54,13 @@ export const ChartCard = (props: ChartCardProps) => {
             className={twMerge("overflow-hidden", className)}
             {...elementProps}
         >
-            <div ref={chartContainer}></div>
+            {isLoading ? (
+                <div className="h-[300px] flex justify-center items-center spin">
+                    <ImSpinner10 className="text-4xl animate-spin text-darkGreen" />
+                </div>
+            ) : (
+                <div ref={chartContainer}></div>
+            )}
         </Card>
     );
 };

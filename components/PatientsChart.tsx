@@ -19,6 +19,7 @@ export const PatientsChart = () => {
             title="Patients admitted to hospital"
             chartContainer={chartContainer}
             noteNumber={4}
+            isLoading={chartQuery.isLoading}
         />
     );
 };

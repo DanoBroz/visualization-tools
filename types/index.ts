@@ -1,7 +1,14 @@
+import { CardProps } from "antd";
 import { ReactNode } from "react";
 
 export interface ChildrenProps {
     children: ReactNode;
+}
+
+export interface ChartCardProps extends CardProps {
+    chartContainer: React.MutableRefObject<HTMLDivElement | null>;
+    noteNumber: number;
+    isLoading?: boolean;
 }
 
 type GenericValues<K extends string, V> = {

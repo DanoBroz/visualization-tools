@@ -16,6 +16,7 @@ export const DeathChart = () => {
             title="Latest weekly deaths with COVID-19"
             chartContainer={chartContainer}
             noteNumber={2}
+            isLoading={chartQuery.isLoading}
         />
     );
 };
