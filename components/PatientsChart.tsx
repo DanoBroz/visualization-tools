@@ -18,7 +18,7 @@ export const PatientsChart = () => {
         <ChartCard
             title="Patients admitted to hospital"
             chartContainer={chartContainer}
-            noteNumber={2}
+            noteNumber={4}
         />
     );
 };
